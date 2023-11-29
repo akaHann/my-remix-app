@@ -31,11 +31,16 @@ export async function loader() {
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
   const noteData = Object.fromEntries(formData);
-  //TODO: Add validation...
+
   const existingNotes = await getStoredNotes();
   noteData.id = new Date().toISOString();
   const updatedNotes = existingNotes.concat(noteData);
   await storedNotes(updatedNotes);
+
+  // await new Promise<void>((resolve, reject) =>
+  //   setTimeout(() => resolve(), 2000)
+  // );
+
   return redirect("/notes");
 }
 

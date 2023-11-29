@@ -1,12 +1,17 @@
 import React from "react";
 import type { LinksFunction } from "@remix-run/node";
 import styles from "./NewNote.css";
+import { Form, useNavigation } from "@remix-run/react";
 
 interface NewNoteProps {}
 
 const NewNote: React.FC<NewNoteProps> = () => {
+  const navigation = useNavigation();
+
+  const isSubmutting = navigation.state === "submitting";
+
   return (
-    <form method="post" id="note-form">
+    <Form method="post" id="note-form">
       <p>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" required />
@@ -16,9 +21,11 @@ const NewNote: React.FC<NewNoteProps> = () => {
         <textarea id="content" name="content" rows={5} required />
       </p>
       <div className="form-actions">
-        <button>Add Note</button>
+        <button disabled={isSubmutting}>
+          {isSubmutting ? "Adding ..." : "Add Note"}
+        </button>
       </div>
-    </form>
+    </Form>
   );
 };
 
